@@ -29,6 +29,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 def lifeCycleExtensionsVersion = '1.1.1'
@@ -38,6 +42,7 @@ def daggerVersion = '2.13'
 def glideVersion = '4.8.0'
 def mockitoVersion = '2.11.0'
 def rxJavaVersion = '2.0.1'
+def yogacpVersion = '1.0.4'
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -64,6 +69,8 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportVersion"
 
     implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionsVersion"
+
+    implementation "com.github.yogacp:android-viewbinding:$yogacpVersion"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
