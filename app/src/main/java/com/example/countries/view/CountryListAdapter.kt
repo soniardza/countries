@@ -1,19 +1,19 @@
 package com.example.countries.view
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.countries.databinding.ItemCountryBinding
 import com.example.countries.model.Country
 
-class CountryListAdapter(var countries: ArrayList<Country>) :
-    RecyclerView.Adapter<CountryListAdapter.CountryViewHolder>() {
+class CountryListAdapter(var countriesList: ArrayList<Country>) :
+    RecyclerView.Adapter<CountryViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateCountries(newCountries: List<Country>) {
-        countries.clear()
-        countries.addAll(newCountries)
+        countriesList.clear()
+        countriesList.addAll(newCountries)
         notifyDataSetChanged()
     }
     /**
@@ -24,18 +24,12 @@ class CountryListAdapter(var countries: ArrayList<Country>) :
         return CountryViewHolder(itemBinding)
     }
 
+    // This method goes for each item of list and calls Bind()
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        holder.bind(countries[position])
+        val item = countriesList[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = countries.size
+    override fun getItemCount(): Int = countriesList.size
 
-    class CountryViewHolder(itemBinding: ItemCountryBinding): RecyclerView.ViewHolder(itemBinding.root) {
-
-        private val countryName = itemBinding.name
-
-        fun bind(country: Country) {
-            countryName.text = country.countryName
-        }
-    }
 }

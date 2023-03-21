@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.countries"
@@ -43,6 +43,7 @@ def glideVersion = '4.8.0'
 def mockitoVersion = '2.11.0'
 def rxJavaVersion = '2.0.1'
 def yogacpVersion = '1.0.4'
+def swipeRefreshLayoutVersion = '1.0.0'
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -62,13 +63,15 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
 
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
+//    implementation "com.android.support:recyclerview-v7:$supportVersion"
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 
-    implementation "com.android.support:appcompat-v7:$supportVersion"
+//    implementation "com.android.support:appcompat-v7:$supportVersion"
 
     implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionsVersion"
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
 
     implementation "com.github.yogacp:android-viewbinding:$yogacpVersion"
 
