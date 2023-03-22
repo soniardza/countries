@@ -2,9 +2,17 @@ package com.example.countries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.countries.model.CountriesService
 import com.example.countries.model.Country
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 
 class ListViewModel: ViewModel() {
+
+    private val countriesService = CountriesService()
+    private val disposable = CompositeDisposable() //
 
     // Anyone who subscribes to it will get notified whenever this variable is updated
     val countries = MutableLiveData<List<Country>>()
@@ -21,24 +29,29 @@ class ListViewModel: ViewModel() {
      It's private because we don't want to expose the functionality
      **/
     private fun fetchCountries() {
-        val mockData = listOf(
-            Country("CountryA"),
-            Country("CountryB"),
-            Country("CountryC"),
-            Country("CountryD"),
-            Country("CountryE"),
-            Country("CountryF"),
-            Country("CountryG"),
-            Country("CountryH"),
-            Country("CountryI"),
-            Country("CountryJ")
-        )
+        loading.value = true
+        disposable.add(
+            countriesService.getCountries()// get a single list countries
+                .subscribeOn(Schedulers.newThread()) // we relegate all the process on the background thread (new thread) // subscribe to this observable on this thread
+                .observeOn(AndroidSchedulers.mainThread()) // we get all the information on main thread
+                .subscribeWith(object: DisposableSingleObserver<List<Country>>() {
+                    override fun onSuccess(value: List<Country>?) {
+                        countries.value = value
+                        countryLoadError.value = false
+                        loading.value = false
+                    }
 
-        // false = means that I have had no error in loading the data, so I need to notify all the subscribers
-        countryLoadError.value = false
-        loading.value = false
-        // mockData = means that whoever is subscribed to my country's variable once I get the
-        // information from the backend, I have a list of countries and I update my local variable
-        countries.value = mockData
+                    override fun onError(e: Throwable?) {
+                        countryLoadError.value = true
+                        loading.value = false
+                    }
+
+                })
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }
