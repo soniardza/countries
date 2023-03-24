@@ -31,6 +31,7 @@ class ListViewModelTest {
 
     @InjectMocks
     var listViewModel = ListViewModel()
+    // lateinit var listViewModel: ListViewModel // another implementation to initialize a ViewModel
 
     private var testSingle: Single<List<Country>>? = null
 
