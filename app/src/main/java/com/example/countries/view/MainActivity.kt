@@ -6,12 +6,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.countries.databinding.ActivityMainBinding
 import com.example.countries.viewmodel.ListViewModel
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: ListViewModel
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var binding: ActivityMainBinding
     private val countriesAdapter = CountryListAdapter(arrayListOf())
 
@@ -25,6 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         initRecyclerView()
 
+        swipeRefreshLayout = binding.swipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            viewModel.refresh()
+        }
+
+
         observeViewModel()
     }
 
@@ -35,12 +44,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun observeViewModel() {
+    private fun observeViewModel() {
         viewModel.countries.observe(
             this,
             Observer { countries ->
-                countries?.let { countriesAdapter.updateCountries(it) }
-
+                countries?.let {
+                    binding.countryRecyclerView.visibility = View.VISIBLE
+                    countriesAdapter.updateCountries(it)
+                }
             }
         )
 
