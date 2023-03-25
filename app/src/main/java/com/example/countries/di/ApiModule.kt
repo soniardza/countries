@@ -1,0 +1,30 @@
+package com.example.countries.di
+
+import com.example.countries.model.CountriesApi
+import com.example.countries.model.CountriesService
+import dagger.Module
+import dagger.Provides
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+
+@Module
+class ApiModule {
+
+    private val BASE_URL = "https://raw.githubusercontent.com"
+
+    @Provides
+    fun provideCountriesApi(): CountriesApi {
+        return Retrofit.Builder() // creates the the framework for retrofit which help us to get the information from the backend
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()) // transform the Json into data class country
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) // transform our data into an observable variable
+            .build()
+            .create(CountriesApi::class.java) // be able to return a list of country, single = an observable that emits one variable and then closes
+    }
+
+    @Provides
+    fun provideCountriesService(): CountriesService {
+        return CountriesService()
+    }
+}
