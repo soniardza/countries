@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace "com.example.countries"
     compileSdk 33
 
     defaultConfig {
@@ -37,6 +38,12 @@ android {
 
     kapt {
         generateStubs = true
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
